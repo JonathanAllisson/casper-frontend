@@ -1,4 +1,5 @@
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import Dashboard from './components/Dashboard';
 import HomePage from './components/HomePage';
 
 function App(){
@@ -7,7 +8,7 @@ function App(){
         <BrowserRouter>
             <Switch>
                 <Route exact path="/" component={HomePage} />
-                {/* <Route exact path="/dashboard" component={HomePage} /> */}
+                <Route exact path="/dashboard" component={Dashboard} /> 
             </Switch>
         </BrowserRouter>
     )

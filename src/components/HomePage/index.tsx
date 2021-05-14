@@ -2,8 +2,9 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { Modal } from '@material-ui/core';
 import './styles.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import TextField from '@material-ui/core/TextField'
+import { useHistory } from "react-router-dom";
 
 const StyledButton = withStyles({
   root: {
@@ -22,8 +23,10 @@ const StyledButton = withStyles({
 
 function HomePage() {
 
+    let history = useHistory();
+
     const [open, setOpen] = useState(false);
-    const [pin, setPin] = useState<number>();
+    const [pinCode, setPinCode] = useState<number>();
 
     const handleOpen = () => {
         setOpen(true);
@@ -32,6 +35,17 @@ function HomePage() {
     const handleClose = () => {
         setOpen(false);
     };
+
+    useEffect(() => {
+      if(pinCode === 5555){
+        history.push('/dashboard');
+      }
+    },[pinCode]);
+
+    const handleSetPinCode = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setPinCode(parseInt(e.target.value))
+    }
+
   return (
     <div className="home">
       <StyledButton onClick={handleOpen}>Acessar Painel de controle</StyledButton>
@@ -46,8 +60,8 @@ function HomePage() {
             <h3>Digite o PIN para acessar o painel de controle</h3>
             <TextField 
               type="number" 
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPin(parseInt(e.target.value))} 
-              value={pin} 
+              onChange={(handleSetPinCode)} 
+              value={pinCode} 
               id="outlined-basic" 
               label="Pin" 
               variant="outlined" 
