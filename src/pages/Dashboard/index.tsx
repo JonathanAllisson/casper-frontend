@@ -12,23 +12,23 @@ import Tooltip from "@material-ui/core/Tooltip";
 import AddIcon from '@material-ui/icons/Add';
 import Fab from '@material-ui/core/Fab';
 import { Modal } from '@material-ui/core';
-import TextField from '@material-ui/core/TextField'
+import Backdrop from '@material-ui/core/Backdrop';
 
 import "./styles.css";
 import { useEffect, useState } from 'react';
-
-
-
+import AddEditNotice from '../AddEditNotice';
+import api from '../../services/api';
 
 function Dashboard(){
 
     const [notices, setNotices] = useState<any>([]);
     const [open, setOpen] = useState<boolean>(false);
-
+    const [inUpdate, setInUpdate] = useState({});
+    const [isUpdate, setIsUpdate] = useState(false);
+    
     useEffect(() => {
-        fetch('http://localhost:3333/notices')
-        .then(res => res.json())
-        .then(resp => setNotices(resp))
+        api('notices')
+        .then(resp => setNotices(resp.data))
 
     }, []);
 
@@ -37,8 +37,16 @@ function Dashboard(){
     };
     
     const handleClose = () => {
+        setIsUpdate(false)
+        setInUpdate({})
         setOpen(false);
     };
+
+    async function handleUpdate(n: any){
+        setInUpdate(n);
+        setIsUpdate(true)
+        handleOpen();
+    }
 
     return (
         <div className="container">
@@ -59,7 +67,7 @@ function Dashboard(){
                     <TableRow key={notice.id}>
                     <TableCell component="th" scope="row">{notice.title}</TableCell>
                     <TableCell align="right">{notice._id}</TableCell>
-                    <TableCell align="right">{notice.description} Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sint fugit nostrum non animi incidunt, sit eum at ipsam quis, delectus sunt voluptas maiores nulla consequuntur tenetur! Beatae impedit necessitatibus corporis.</TableCell>
+                    <TableCell align="right">{notice.description}</TableCell>
                     <TableCell align="right">{notice.theme}</TableCell>
                     <TableCell align="right">{notice.linkImage}</TableCell>
                     <TableCell>
@@ -68,7 +76,7 @@ function Dashboard(){
                                 <DeleteIcon />
                             </IconButton>
                     </Tooltip>
-                    <Tooltip title="Edite">
+                    <Tooltip title="Edite" onClick={() => handleUpdate(notice)}>
                             <IconButton aria-label="edite">
                                 <EditIcon />
                             </IconButton>
@@ -89,12 +97,14 @@ function Dashboard(){
                 className="modal-home"
                 open={open}
                 onClose={handleClose}
-                aria-labelledby="simple-modal-title"
-                aria-describedby="simple-modal-description"
+                BackdropComponent={Backdrop}
+                BackdropProps={{
+                timeout: 500,
+                }}
             >
-                <div className="box-pin">
-                    <h3>Digite o PIN para acessar o painel de controle</h3>
-                </div>
+                {
+                   isUpdate ? <AddEditNotice setInUpdate={setInUpdate} setIsUpdate={setIsUpdate} notice={inUpdate}/> : <AddEditNotice />
+                }
             </Modal>
             </TableContainer>
         </div>

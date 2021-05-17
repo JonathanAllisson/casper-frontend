@@ -1,0 +1,19 @@
+.form-AddEdit {
+    background: #FFF;
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    padding: 25px 30px;
+}
+
+.button-submit{
+    border: 0px;
+    cursor: pointer;
+    height: 56px;
+    width: 100%;
+    color: #FFF;
+    background: linear-gradient(45deg, #7a77ff, #310dff);
+    border-radius: 5px;
+    font-size: 16px;
+    margin-top: 10px;
+}

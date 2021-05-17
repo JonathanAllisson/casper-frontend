@@ -1,6 +1,6 @@
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
-import Dashboard from './components/Dashboard';
-import HomePage from './components/HomePage';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import Dashboard from './pages/Dashboard';
+import HomePage from './pages/HomePage';
 
 function App(){
 

@@ -3,8 +3,11 @@ import Button from '@material-ui/core/Button';
 import { Modal } from '@material-ui/core';
 import './styles.css';
 import { useEffect, useState } from 'react';
-import TextField from '@material-ui/core/TextField'
+import TextField from '@material-ui/core/TextField';
+import Backdrop from '@material-ui/core/Backdrop';
+import Fade from '@material-ui/core/Fade';
 import { useHistory } from "react-router-dom";
+
 
 const StyledButton = withStyles({
   root: {
@@ -26,7 +29,7 @@ function HomePage() {
     let history = useHistory();
 
     const [open, setOpen] = useState(false);
-    const [pinCode, setPinCode] = useState<number>();
+    const [pinCode, setPinCode] = useState('');
 
     const handleOpen = () => {
         setOpen(true);
@@ -37,13 +40,15 @@ function HomePage() {
     };
 
     useEffect(() => {
-      if(pinCode === 5555){
+      const pCode = process.env.REACT_APP_API_PIN_CODE;
+
+      if(pinCode === pCode){
         history.push('/dashboard');
       }
     },[pinCode]);
 
     const handleSetPinCode = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setPinCode(parseInt(e.target.value))
+      setPinCode(e.target.value)
     }
 
   return (
@@ -53,9 +58,12 @@ function HomePage() {
           className="modal-home"
           open={open}
           onClose={handleClose}
-          aria-labelledby="simple-modal-title"
-          aria-describedby="simple-modal-description"
+          BackdropComponent={Backdrop}
+          BackdropProps={{
+          timeout: 500,
+        }}
       >
+        <Fade in={open}>
           <div className="box-pin">
             <h3>Digite o PIN para acessar o painel de controle</h3>
             <TextField 
@@ -65,8 +73,9 @@ function HomePage() {
               id="outlined-basic" 
               label="Pin" 
               variant="outlined" 
-            />
+              />
           </div>
+        </Fade>
       </Modal>
     </div>
   );
