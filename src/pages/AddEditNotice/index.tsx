@@ -1,16 +1,10 @@
 import TextField from '@material-ui/core/TextField';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, FormEvent } from 'react';
 import api from '../../services/api';
 
 import './styles.css'
 
-export interface Props {
-    notice: any;
-    setIsUpdate: (n: any) => void;
-    setInUpdate: (n: any) => void;
-}
-
-function AddEditNotice({ notice, setIsUpdate, setInUpdate } : any){
+function AddEditNotice({ notice, setIsUpdate, setInUpdate, setOpen } : any){
 
     const themes = [
         {
@@ -31,7 +25,7 @@ function AddEditNotice({ notice, setIsUpdate, setInUpdate } : any){
         }
     ]
 
-    const [theme, setTheme] = useState('');
+    const [theme, setTheme] = useState('esportes');
     const [description, setDescription] = useState('');
     const [title, setTitle] = useState('');
     const [linkImage, setLinkImage] = useState('');
@@ -64,17 +58,22 @@ function AddEditNotice({ notice, setIsUpdate, setInUpdate } : any){
         setLinkImage(e.target.value)
     }
 
-    const handleSubmitForm = async () => {
+    const handleSubmitForm = async (e : FormEvent) => {
+        e.preventDefault();
         let data = {};
         if(notice){
             data = {title, description, theme, linkImage, _id};   
             await api.put('notices', data);
             setIsUpdate(false);
             setInUpdate({});
+            setOpen(false);
+            window.location.reload();
         }
         else {
             data = {title, description, theme, linkImage};
             await api.post('notices', data);
+            setOpen(false);
+            window.location.reload();
         }
     }   
 
@@ -108,10 +107,11 @@ function AddEditNotice({ notice, setIsUpdate, setInUpdate } : any){
                 SelectProps={{
                     native: true,
                 }}
+                required={true}
                 variant="outlined"
                 style={{marginTop:"10px"}}
                 >
-                <option defaultValue={''} disabled selected>Selecione um tema</option>
+                <option disabled selected>Selecione um tema</option>
                 {themes.map((option) => (
                     <option key={option.value} value={option.value}>
                         {option.label}

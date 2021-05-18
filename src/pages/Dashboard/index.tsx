@@ -18,6 +18,7 @@ import "./styles.css";
 import { useEffect, useState } from 'react';
 import AddEditNotice from '../AddEditNotice';
 import api from '../../services/api';
+import { Link } from 'react-router-dom';
 
 function Dashboard(){
 
@@ -61,7 +62,7 @@ function Dashboard(){
                 <TableHead>
                 <TableRow>
                     <TableCell>Título da notícia</TableCell>
-                    <TableCell align="right">id</TableCell>
+                    <TableCell align="right">Link url</TableCell>
                     <TableCell align="right">Descrição</TableCell>
                     <TableCell align="right">Tema</TableCell>
                     <TableCell align="right">url da imagem</TableCell>
@@ -71,7 +72,7 @@ function Dashboard(){
                 {notices.map((notice: any) => (
                     <TableRow key={notice.id}>
                     <TableCell component="th" scope="row">{notice.title}</TableCell>
-                    <TableCell align="right">{notice._id}</TableCell>
+                    <TableCell align="right"><Link to={`notice/${notice._id}`}>{process.env.REACT_APP_URL + 'notice/' + notice._id}</Link></TableCell>
                     <TableCell align="right">{notice.description}</TableCell>
                     <TableCell align="right">{notice.theme}</TableCell>
                     <TableCell align="right">{notice.linkImage}</TableCell>
@@ -108,7 +109,7 @@ function Dashboard(){
                 }}
             >
                 {
-                   isUpdate ? <AddEditNotice setInUpdate={setInUpdate} setIsUpdate={setIsUpdate} notice={inUpdate}/> : <AddEditNotice />
+                   isUpdate ? <AddEditNotice setInUpdate={setInUpdate} setIsUpdate={setIsUpdate} notice={inUpdate} setOpen={setOpen}/> : <AddEditNotice setOpen={setOpen} />
                 }
             </Modal>
             </TableContainer>
