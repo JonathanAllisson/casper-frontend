@@ -1,10 +1,13 @@
 import TextField from '@material-ui/core/TextField';
 import React, { useEffect, useState, FormEvent } from 'react';
 import api from '../../services/api';
+import { useHistory } from 'react-router-dom';
 
 import './styles.css'
 
 function AddEditNotice({ notice, setIsUpdate, setInUpdate, setOpen } : any){
+    
+    const history = useHistory();
 
     const themes = [
         {
@@ -67,13 +70,13 @@ function AddEditNotice({ notice, setIsUpdate, setInUpdate, setOpen } : any){
             setIsUpdate(false);
             setInUpdate({});
             setOpen(false);
-            window.location.reload();
+            history.go(0);
         }
         else {
             data = {title, description, theme, linkImage};
             await api.post('notices', data);
             setOpen(false);
-            window.location.reload();
+            history.go(0);
         }
     }   
 
