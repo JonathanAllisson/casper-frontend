@@ -48,6 +48,11 @@ function Dashboard(){
         handleOpen();
     }
 
+    async function handleDelete(id: any){
+        await api.delete(`notices/${id}`);
+        setNotices(notices.filter((item: any) => item._id !== id));
+    };
+
     return (
         <div className="container">
             <TableContainer component={Paper} className="table-container">
@@ -71,7 +76,7 @@ function Dashboard(){
                     <TableCell align="right">{notice.theme}</TableCell>
                     <TableCell align="right">{notice.linkImage}</TableCell>
                     <TableCell>
-                    <Tooltip title="Delete">
+                    <Tooltip title="Delete" onClick={() => handleDelete(notice._id)}>
                             <IconButton aria-label="delete">
                                 <DeleteIcon />
                             </IconButton>
